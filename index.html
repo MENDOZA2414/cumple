@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>😍Eres Hermosaaaa😍</title>
+  <title>Eres hermosa</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     * {
@@ -17,21 +17,28 @@
       font-family: 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif;
     }
 
-    #bgImage {
+    #canvas {
       position: fixed;
       top: 0;
       left: 0;
-      width: 100%;
+      z-index: 1;
+    }
+
+    #photoOverlay {
+      position: fixed;
+      top: 0;
+      left: -10%;
+      width: 120%;
       height: 100%;
       object-fit: cover;
-      z-index: -1;
       opacity: 0;
-      transition: opacity 3s ease;
+      z-index: 2;
+      transition: opacity 2s ease;
       pointer-events: none;
     }
 
-    #bgImage.visible {
-      opacity: 0.2 !important;
+    #photoOverlay.visible {
+      opacity: 1;
     }
 
     #blackOverlay {
@@ -49,13 +56,6 @@
     #blackOverlay.hidden {
       opacity: 0;
       pointer-events: none;
-    }
-
-    #canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: 1;
     }
 
     #startBtn {
@@ -86,7 +86,7 @@
   </style>
 </head>
 <body>
-  <img id="bgImage" src="amor.jpg" alt="Fondo" />
+  <img id="photoOverlay" src="amor.jpeg" alt="Foto final" />
   <div id="blackOverlay"></div>
   <button id="startBtn">🎶</button>
   <canvas id="canvas"></canvas>
@@ -96,7 +96,7 @@
     const canvas = document.getElementById("canvas");
     const ctx = canvas.getContext("2d");
 
-    const message = [
+    let message = [
       "🎉 Feliz Cumpleaños",
       "Mi Amor",
       "Te Amo Camila ❤️"
@@ -197,15 +197,31 @@
 
     window.addEventListener("DOMContentLoaded", () => {
       const blackOverlay = document.getElementById("blackOverlay");
-      const bgImage = document.getElementById("bgImage");
+      const photoOverlay = document.getElementById("photoOverlay");
       const btn = document.getElementById("startBtn");
       const music = document.getElementById("bgMusic");
 
+      // Ocultar fondo negro inicial
       setTimeout(() => {
-        if (blackOverlay) blackOverlay.classList.add("hidden");
-        if (bgImage) bgImage.classList.add("visible");
+        blackOverlay.classList.add("hidden");
       }, 4000);
 
+      // Mostrar imagen + reemplazar todo el texto
+      setTimeout(() => {
+        photoOverlay.classList.add("visible");
+        message = ["Me encantas hemocha❤️"];
+
+        setTimeout(() => {
+          photoOverlay.classList.remove("visible");
+          message = [
+            "🎉 Feliz Cumpleaños",
+            "Mi Amor",
+            "Te Amo Camila ❤️"
+          ];
+        }, 6000);
+      }, 10000);
+
+      // Reproducir música
       btn.addEventListener("click", () => {
         music.play().catch(() => {});
         btn.style.display = "none";
